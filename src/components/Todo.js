@@ -23,6 +23,7 @@ function Todo() {
     if (filter === 'DONE') return item.done;
   });
   
+  console.log(items)
   const handleCheck = checked => {
     updateItem(checked);
   };
