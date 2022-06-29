@@ -10,9 +10,10 @@ import useStorage from '../hooks/storage';
 
 /* ライブラリ */
 import {getKey} from "../lib/util";
+import useFbStorage from '../hooks/useFbStorage';
 
 function Todo() {
-  const [items, putItems, clearItems] = useStorage();
+  const [items, addItem, updateItem, clearItems] = useFbStorage();
   
   const [filter, setFilter] = React.useState('ALL');
 
@@ -23,17 +24,11 @@ function Todo() {
   });
   
   const handleCheck = checked => {
-    const newItems = items.map(item => {
-      if (item.key === checked.key) {
-        item.done = !item.done;
-      }
-      return item;
-    });
-    putItems(newItems);
+    updateItem(checked);
   };
   
   const handleAdd = text => {
-    putItems([...items, { key: getKey(), text, done: false }]);
+    addItem({ text, done: false });
   };
   
   const handleFilterChange = value => setFilter(value);
@@ -55,7 +50,7 @@ function Todo() {
       />
       {displayItems.map(item => (
         <TodoItem 
-          key={item.key}
+          key={item.id}
           item={item}
           onCheck={handleCheck}
         />
